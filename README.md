@@ -6,8 +6,9 @@ interests and age.
 
 Built as a team project with Albert and Caren Chung.
 
-> **Status: backend prototype.** The Express/MongoDB API is implemented; the
-> React frontend in `usermatch/src` is still the Create React App starter page.
+> **Status: backend prototype.** The Express/MongoDB API endpoints are written but
+> not yet working end to end (see [Known issues](#known-issues)); the React
+> frontend in `usermatch/src` is still the Create React App starter page.
 
 ## How matching works
 
@@ -47,14 +48,14 @@ npm start          # API on http://localhost:3000
 # in another terminal (frontend scaffold)
 cd usermatch
 npm install
-npm start
+PORT=3001 npm start   # CRA defaults to 3000, which the API already uses
 ```
 
 ## Known issues
 
 - Passwords are stored and compared in **plain text** — fine for a class demo, must be hashed (e.g. bcrypt) before real use.
 - The `2dsphere` index on `location` is commented out in `backend.js`, which the `$near` query in `/possiblematches` needs.
-- `backend.js` passes the whole `require('./userSchema')` export object to `mongoose.model` instead of its `userSchema` property.
+- `backend.js` passes the whole `require('./userSchema')` export object to `mongoose.model` instead of its `userSchema` property, so the model gets none of the profile fields and saved profiles lose every field. Until this is fixed, none of the endpoints work end to end: login always fails and the interest/match queries find no one.
 - Frontend not built yet.
 
 ## Project structure
